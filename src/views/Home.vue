@@ -1,23 +1,68 @@
 <template lang="html">
-  <div is="sui-container">
-    <sui-grid>
+  <sui-container fluid>
+    <sui-grid style="margin: 0 12rem">
       <sui-grid-row>
-        <sui-grid-column :width="8">
-          <h1>Back-Log</h1>
-          <div style="padding: 2rem; border: 1px solid red">
-            <Card :tasks="tasks" status="backlog" />
-          </div>
+        <sui-grid-column :width="4">
+          <sui-card style="width: 100%">
+            <sui-card-content>
+              <sui-card-header>
+                <h1>Back-Log</h1>
+              </sui-card-header>
+            </sui-card-content>
+            <sui-card-content>
+              <div style="padding: 1rem">
+                <Card :tasks="tasks" status="backlog" color="orange" />
+              </div>
+            </sui-card-content>
+          </sui-card>
         </sui-grid-column>
 
-        <sui-grid-column :width="8">
-          <h1>To-Do</h1>
-          <div style="padding: 2rem; border: 1px solid red">
-            <Card :tasks="tasks" status="todo" />
-          </div>
+        <sui-grid-column :width="4">
+          <sui-card style="width: 100%">
+            <sui-card-content>
+              <sui-card-header>
+                <h1>To-Do</h1>
+              </sui-card-header>
+            </sui-card-content>
+            <sui-card-content>
+              <div style="padding: 1rem">
+                <Card :tasks="tasks" status="todo" color="blue" />
+              </div>
+            </sui-card-content>
+          </sui-card>
+        </sui-grid-column>
+
+        <sui-grid-column :width="4">
+          <sui-card style="width: 100%">
+            <sui-card-content>
+              <sui-card-header>
+                <h1>Doing</h1>
+              </sui-card-header>
+            </sui-card-content>
+            <sui-card-content>
+              <div style="padding: 1rem">
+                <Card :tasks="tasks" status="doing" color="pink" />
+              </div>
+            </sui-card-content>
+          </sui-card>
+        </sui-grid-column>
+        <sui-grid-column :width="4">
+          <sui-card style="width: 100%">
+            <sui-card-content>
+              <sui-card-header>
+                <h1>Done</h1>
+              </sui-card-header>
+            </sui-card-content>
+            <sui-card-content>
+              <div style="padding: 1rem">
+                <Card :tasks="tasks" status="done" color="green" />
+              </div>
+            </sui-card-content>
+          </sui-card>
         </sui-grid-column>
       </sui-grid-row>
     </sui-grid>
-  </div>
+  </sui-container>
 </template>
 
 <script>
@@ -80,16 +125,13 @@ export default {
   watch: {
     'tasks.backlog': function(next, prev) {
       const newBacklog = next.filter(data => data.status !== 'backlog')
-      console.log(newBacklog)
       if (newBacklog.length) {
         db.collection('tasks')
           .doc(newBacklog[0].id)
           .update({
             status: 'backlog'
           })
-          .then(_ => {
-            console.log('updated backlog')
-          })
+          .then(_ => {})
           .catch(err => {
             console.log(err)
           })
@@ -97,16 +139,41 @@ export default {
     },
     'tasks.todo': function(next, prev) {
       const newTodo = next.filter(data => data.status !== 'todo')
-      console.log(newTodo)
       if (newTodo.length) {
         db.collection('tasks')
           .doc(newTodo[0].id)
           .update({
             status: 'todo'
           })
-          .then(_ => {
-            console.log('updated todo')
+          .then(_ => {})
+          .catch(err => {
+            console.log(err)
           })
+      }
+    },
+    'tasks.doing': function(next, prev) {
+      const newDoing = next.filter(data => data.status !== 'doing')
+      if (newDoing.length) {
+        db.collection('tasks')
+          .doc(newDoing[0].id)
+          .update({
+            status: 'doing'
+          })
+          .then(_ => {})
+          .catch(err => {
+            console.log(err)
+          })
+      }
+    },
+    'tasks.done': function(next, prev) {
+      const newDone = next.filter(data => data.status !== 'done')
+      if (newDone.length) {
+        db.collection('tasks')
+          .doc(newDone[0].id)
+          .update({
+            status: 'done'
+          })
+          .then(_ => {})
           .catch(err => {
             console.log(err)
           })

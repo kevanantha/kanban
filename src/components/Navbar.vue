@@ -1,25 +1,33 @@
 <template>
   <div class="ui secondary menu">
     <sui-modal v-model="isOpenAddTask">
-      <sui-modal-header>Add Task</sui-modal-header>
+      <sui-modal-header>New a new issue</sui-modal-header>
       <sui-modal-content>
         <sui-message v-if="error.length" negative header="Ouch!" :list="error" />
         <sui-form @submit.prevent="handleAddTask">
-          <sui-form-field>
-            <label>Task Name</label>
-            <input v-model="name" placeholder="Task Name" />
+          <sui-form-field required>
+            <label>Issue title</label>
+            <input v-model="name" required placeholder="Title of new issue" />
+          </sui-form-field>
+          <sui-form-field required>
+            <label>Issue description</label>
+            <input v-model="description" required placeholder="Description of new issue" />
           </sui-form-field>
           <sui-form-field>
-            <label>Description</label>
-            <input v-model="description" placeholder="Task Description" />
+            <label>Labels</label>
+            <sui-dropdown
+              fluid
+              multiple
+              :options="labels"
+              placeholder="Label issue"
+              search
+              selection
+              v-model="tags"
+            />
           </sui-form-field>
-          <sui-form-field>
-            <label>Priority</label>
-            <input v-model="priority" placeholder="Priority" />
-          </sui-form-field>
-          <sui-button :loading="loadingBtn" :disabled="disabledBtn" positive type="submit"
-            >Add Task</sui-button
-          >
+          <sui-button :loading="loadingBtn" :disabled="disabledBtn" positive type="submit">
+            Submit new issue
+          </sui-button>
         </sui-form>
       </sui-modal-content>
     </sui-modal>
@@ -36,9 +44,6 @@
           <sui-form-field>
             <label>Password</label>
             <input v-model="password" placeholder="Password" />
-          </sui-form-field>
-          <sui-form-field>
-            <sui-checkbox label="I agree to the Terms and Conditions" />
           </sui-form-field>
           <sui-button :loading="loadingBtn" positive type="submit">Register</sui-button>
         </sui-form>
@@ -73,7 +78,7 @@
         </div>
       </div>
       <div class="item">
-        <sui-button @click.native="openAddTask">Add Task</sui-button>
+        <sui-button @click.native="openAddTask">New Issue</sui-button>
       </div>
       <div class="item">
         <sui-button @click.native="openLogin">Login</sui-button>
@@ -102,11 +107,32 @@ export default {
       isOpenAddTask: false,
       name: '',
       description: '',
-      priority: '',
+      tags: '',
       email: '',
       password: '',
       error: [],
-      disabled: true
+      disabled: true,
+      labels: [
+        { key: 'bug', text: 'Bug', value: { value: 'bug', color: 'red' } },
+        { key: 'enhancement', text: 'Enhancement', value: { value: 'enhancement', color: 'teal' } },
+        {
+          key: 'good first issue',
+          text: 'Good first issue',
+          value: {
+            value: 'good first issue',
+            color: 'violet'
+          }
+        },
+        {
+          key: 'help wanted',
+          text: 'Help wanted',
+          value: { value: 'help wanted', color: 'green' }
+        },
+        { key: 'question', text: 'Question', value: { value: 'question', color: 'pink' } },
+        { key: 'wontfix', text: 'Wontfix', value: { value: 'wontfix', color: 'yellow' } },
+        { key: 'duplicate', text: 'Duplicate', value: { value: 'duplicate', color: 'grey' } },
+        { key: 'invalid', text: 'Invalid', value: { value: 'invalid', color: 'brown' } }
+      ]
     }
   },
   computed: {
@@ -129,16 +155,23 @@ export default {
       this.isOpenRegister = false
     },
     handleAddTask() {
+      this.loadingBtn = true
+      this.error = []
       db.collection('tasks')
         .add({
           name: this.name,
           description: this.description,
-          priority: this.priority,
+          tags: this.tags,
           status: 'backlog'
         })
-        .then(function(docRef) {
+        .then(docRef => {
           console.log(docRef)
           console.log('Document written with ID: ', docRef.id)
+          this.isOpenAddTask = false
+          this.loadingBtn = false
+          this.name = ''
+          this.description = ''
+          this.tags = ''
         })
         .catch(function(error) {
           console.error('Error adding document: ', error)
