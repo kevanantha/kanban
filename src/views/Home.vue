@@ -21,14 +21,12 @@
 </template>
 
 <script>
-import draggable from 'vuedraggable'
 import db from '@/config/firestore'
 import Card from '@/components/Card'
 
 export default {
   name: 'Home',
   components: {
-    draggable,
     Card
   },
   data() {
@@ -83,7 +81,36 @@ export default {
     'tasks.backlog': function(next, prev) {
       const newBacklog = next.filter(data => data.status !== 'backlog')
       console.log(newBacklog)
-      db.collection('tasks')
+      if (newBacklog.length) {
+        db.collection('tasks')
+          .doc(newBacklog[0].id)
+          .update({
+            status: 'backlog'
+          })
+          .then(_ => {
+            console.log('updated backlog')
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
+    },
+    'tasks.todo': function(next, prev) {
+      const newTodo = next.filter(data => data.status !== 'todo')
+      console.log(newTodo)
+      if (newTodo.length) {
+        db.collection('tasks')
+          .doc(newTodo[0].id)
+          .update({
+            status: 'todo'
+          })
+          .then(_ => {
+            console.log('updated todo')
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
     }
   }
 }
