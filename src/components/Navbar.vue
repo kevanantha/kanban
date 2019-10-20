@@ -67,28 +67,28 @@
         </sui-form>
       </sui-modal-content>
     </sui-modal>
-    <div class="item">
-      <router-link to="/">Home</router-link>
-    </div>
+    <!-- <div class="item"> -->
+    <!--   <router-link to="/">Home</router-link> -->
+    <!-- </div> -->
     <div class="right menu">
-      <div class="item">
-        <div class="ui icon input">
-          <input type="text" placeholder="Search..." />
-          <i class="search link icon"></i>
-        </div>
-      </div>
+      <!-- <div class="item"> -->
+      <!--   <div class="ui icon input"> -->
+      <!--     <input type="text" placeholder="Search..." /> -->
+      <!--     <i class="search link icon"></i> -->
+      <!--   </div> -->
+      <!-- </div> -->
       <div class="item">
         <sui-button @click.native="openAddTask">New Issue</sui-button>
       </div>
-      <div class="item">
-        <sui-button @click.native="openLogin">Login</sui-button>
-      </div>
-      <div class="item">
-        <sui-button @click.native="openRegister">Register</sui-button>
-      </div>
-      <a class="ui item">
-        Logout
-      </a>
+      <!-- <div class="item"> -->
+      <!--   <sui-button @click.native="openLogin">Login</sui-button> -->
+      <!-- </div> -->
+      <!-- <div class="item"> -->
+      <!--   <sui-button @click.native="openRegister">Register</sui-button> -->
+      <!-- </div> -->
+      <!-- <a class="ui item"> -->
+      <!--   Logout -->
+      <!-- </a> -->
     </div>
   </div>
 </template>

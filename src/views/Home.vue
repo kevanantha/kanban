@@ -76,9 +76,6 @@ export default {
   },
   data() {
     return {
-      editable: true,
-      isDragging: false,
-      delayedDragging: false,
       isLogin: false,
       tasks: {
         backlog: [],

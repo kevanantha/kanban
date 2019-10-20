@@ -81,7 +81,6 @@ export default {
   data() {
     return {
       isDragging: false,
-      delayedDragging: false,
       open: false
     }
   },
